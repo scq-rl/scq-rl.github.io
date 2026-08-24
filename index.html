@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SCQ: Stabilizing Conservative Q-Learning with Sigmoid-Bounded Entropy." />
+    <title>SCQ — Sigmoid-Bounded Conservative Q-Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="SCQ home">SCQ<span>.</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="#method">Method</a>
+        <a href="#research">Research</a>
+        <a href="#resources">Resources</a>
+        <a href="#citation">Citation</a>
+      </nav>
+      <a class="header-link" href="https://github.com/scq-rl" target="_blank" rel="noreferrer">GitHub ↗</a>
+    </header>
+
+    <main id="top">
+      <section class="hero section-shell">
+        <p class="eyebrow">OFFLINE-TO-ONLINE REINFORCEMENT LEARNING</p>
+        <h1>Stabilizing Conservative Q-Learning with <em>Sigmoid-Bounded Entropy.</em></h1>
+        <p class="hero-positioning">
+          SCQ makes low-cost online learning on deployed robots practical for training end-to-end visual agents.
+        </p>
+        <p class="hero-copy">
+          Starting from limited demonstrations, it stabilizes online policy improvement under visual distribution shift—without human-in-the-loop correction.
+        </p>
+        <div class="authors" id="authors" aria-label="Authors"></div>
+        <div class="hero-actions">
+          <a class="button button-primary" id="paper-link" href="#resources">Paper <span>↓</span></a>
+          <a class="button button-secondary" id="code-link" href="https://github.com/scq-rl" target="_blank" rel="noreferrer">Code <span>↗</span></a>
+        </div>
+        <p class="publication-note" id="publication-note"></p>
+        <figure class="hero-media-grid" aria-label="Real-world SCQ task clips">
+          <div class="hero-clip hero-clip-wide">
+            <img src="assets/gifs/humanoid-kicking.gif" alt="Humanoid robot kicking a ball" />
+            <span>Humanoid kicking</span>
+          </div>
+          <div class="hero-clip">
+            <img src="assets/gifs/ball-to-goal.gif" alt="Wheeled robot moving a ball toward a goal" />
+            <span>Ball-to-goal</span>
+          </div>
+          <div class="hero-clip">
+            <img src="assets/gifs/quadruped-navigation.gif" alt="Quadruped robot navigating a physical environment" />
+            <span>Quadruped navigation</span>
+          </div>
+          <div class="hero-clip">
+            <img src="assets/gifs/arm-alignment.gif" alt="Robot arm performing precision alignment" />
+            <span>Precision arm alignment</span>
+          </div>
+        </figure>
+      </section>
+
+      <section class="signal-strip" aria-label="SCQ overview">
+        <div><span class="signal-number">01</span> Positive bounded entropy</div>
+        <div><span class="signal-number">02</span> Conservative value learning</div>
+        <div><span class="signal-number">03</span> Offline-to-online adaptation</div>
+      </section>
+
+      <section id="method" class="section-shell method-section">
+        <div class="section-intro">
+          <p class="eyebrow">THE CENTRAL IDEA</p>
+          <h2>Entropy should support optimization, not destabilize it.</h2>
+          <p>
+            Standard entropy terms can become negative. During online fine-tuning with limited replay support, that can amplify policy-mean oscillations and pull improvement toward out-of-distribution actions.
+          </p>
+        </div>
+        <div class="method-visual" aria-label="SCQ method diagram">
+          <div class="flow-node flow-policy">
+            <span>Policy</span>
+            <strong>π<sub>θ</sub>(a | s)</strong>
+            <small>sample actions</small>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node flow-entropy">
+            <span>SigEnt</span>
+            <strong>σ((−log π − m) / t)</strong>
+            <small>strictly positive &amp; bounded</small>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node flow-critic">
+            <span>Conservative critic</span>
+            <strong>Q<sub>ϕ</sub>(s, a)</strong>
+            <small>stable value improvement</small>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <p class="feature-index">A</p>
+            <h3>Sigmoid-bounded entropy</h3>
+            <p>Transforms per-dimension surprisal into a smooth bounded score, so the entropy contribution remains positive and controlled.</p>
+          </article>
+          <article>
+            <p class="feature-index">B</p>
+            <h3>Conservative Q-learning</h3>
+            <p>Retains conservative value regularization and return-based calibration to reduce overestimation under dataset shift.</p>
+          </article>
+          <article>
+            <p class="feature-index">C</p>
+            <h3>Stable online adaptation</h3>
+            <p>Targets a reliable learning signal when policies transition from demonstrations to online robot interaction.</p>
+          </article>
+        </div>
+        <figure class="evidence-figure">
+          <div class="evidence-heading">
+            <p class="eyebrow">FIG. 01 · MECHANISM AND TRAINING DIAGNOSTIC</p>
+            <h3>Why bounded entropy produces a clearer policy-improvement signal.</h3>
+          </div>
+          <div class="evidence-grid">
+            <article>
+              <img src="assets/figures/negative-entropy-mechanism.png" alt="Conceptual comparison of default entropy and sigmoid-bounded entropy in the soft Q landscape" />
+              <p><strong>(a) Negative-entropy mechanism.</strong> With a Gaussian policy of σπ = 0.1 and actions sampled within 1.5σπ of the mean, the default entropy term can lower Q̂ near the policy action and shift max-Q improvement toward OOD actions. SigEnt remains positive and bounded, producing a clearer high-Q region.</p>
+            </article>
+            <article>
+              <img src="assets/figures/door-human-q-gradient.png" alt="Door Human policy mean Q-gradient training diagnostic" />
+              <p><strong>(b) Door Human one-shot diagnostic.</strong> The curves show logged batch mean ‖∇μ(−Q)‖₂ over 1M online steps without pretraining. The standard-entropy run ends at its 975k crash point; SigEnt uses target standard deviations 0.08 and 0.20. Each curve is one run.</p>
+            </article>
+          </div>
+        </figure>
+      </section>
+
+      <section id="research" class="research-section">
+        <div class="section-shell">
+          <p class="eyebrow">REAL-WORLD ROBOT LEARNING</p>
+          <h2>Learn from one demonstration. Improve online. Deploy without intervention.</h2>
+          <p class="research-lead">
+            SCQ is designed around a practical deployment setting: a robot begins with a single successful demonstration, learns from its own online interaction, and executes without human-in-the-loop correction.
+          </p>
+          <div class="coverage-block">
+            <p class="eyebrow">ONE LEARNING FRAMEWORK, MULTIPLE EMBODIMENTS</p>
+            <ul class="coverage-list">
+              <li><strong>High-precision manipulation</strong><span>fine-grained object control</span></li>
+              <li><strong>Wheeled loco-manipulation</strong><span>mobile ball-to-goal behavior</span></li>
+              <li><strong>Quadruped navigation</strong><span>visual navigation in physical layouts</span></li>
+              <li><strong>Humanoid navigation &amp; kicking</strong><span>dynamic whole-body interaction</span></li>
+            </ul>
+          </div>
+          <div class="innovation-grid">
+            <article>
+              <span>01</span>
+              <h3>One-shot initialization</h3>
+              <p>Start from one successful demonstration rather than a large, task-specific data collection campaign.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>Online learning</h3>
+              <p>Improve the policy directly from new robot interaction after the initial demonstration.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>No HIL correction</h3>
+              <p>Run the learning and deployment loop without human-in-the-loop action correction or teleoperation.</p>
+            </article>
+            <article>
+              <span>04</span>
+              <h3>Generalization in deployment</h3>
+              <p>Target robustness to changes in object position and environmental lighting from a fixed camera view.</p>
+            </article>
+          </div>
+          <div class="task-list">
+            <article class="task-row">
+              <header class="task-summary">
+                <p class="research-tag">TASK 01 · 01 CLIP</p>
+                <h3>High-Precision Manipulation</h3>
+                <p>Visual arm alignment for a fine-grained contact and positioning task.</p>
+              </header>
+              <div class="clip-grid clip-grid-single">
+                <video muted loop playsinline preload="none"><source src="assets/videos/manipulation/arm-align.mp4" type="video/mp4" /></video>
+              </div>
+              <div class="precision-details">
+                <div class="precision-metrics" aria-label="High-precision manipulation results">
+                  <article><strong>30 min</strong><span>online training time</span></article>
+                  <article><strong>8,000</strong><span>interaction steps to first 100% success</span></article>
+                  <article><strong>&lt;0.2 mm</strong><span>positioning precision</span></article>
+                  <article><strong>&lt;1°</strong><span>angular precision</span></article>
+                </div>
+                <div class="precision-protocol">
+                  <p class="research-tag">FIXED-ANCHOR TRAINING · GENERALIZATION EVALUATION</p>
+                  <p>Training uses a fixed anchor configuration. Evaluation changes target position and target angle, testing cross-position and cross-angle generalization rather than memorization of the training pose.</p>
+                </div>
+              </div>
+            </article>
+            <article class="task-row">
+              <header class="task-summary">
+                <p class="research-tag">TASK 02 · 08 CLIPS</p>
+                <h3>Wheeled Loco-Manipulation</h3>
+                <p>Ball-to-goal behavior combines navigation, object interaction, and variable spatial task layouts.</p>
+              </header>
+              <div class="clip-grid clip-grid-eight">
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/1.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/2.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/3.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/4.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/5.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/6.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/7.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/ball-to-goal/8.mp4" type="video/mp4" /></video>
+              </div>
+            </article>
+            <article class="task-row">
+              <header class="task-summary">
+                <p class="research-tag">TASK 03 · 06 CLIPS</p>
+                <h3>Quadruped Navigation</h3>
+                <p>Visual locomotion through physical environments with changed obstacle layouts and paths.</p>
+              </header>
+              <div class="clip-grid">
+                <video muted loop playsinline preload="none"><source src="assets/videos/quadruped/1.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/quadruped/2.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/quadruped/3.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/quadruped/4.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/quadruped/5.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/quadruped/6.mp4" type="video/mp4" /></video>
+              </div>
+            </article>
+            <article class="task-row">
+              <header class="task-summary">
+                <p class="research-tag">TASK 04 · 06 CLIPS</p>
+                <h3>Humanoid Navigation &amp; Kicking</h3>
+                <p>Dynamic whole-body control with locomotion, target approach, and contact-rich kicking behavior.</p>
+              </header>
+              <div class="clip-grid">
+                <video muted loop playsinline preload="none"><source src="assets/videos/humanoid/1.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/humanoid/2.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/humanoid/3.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/humanoid/4.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/humanoid/5.mp4" type="video/mp4" /></video>
+                <video muted loop playsinline preload="none"><source src="assets/videos/humanoid/6.mp4" type="video/mp4" /></video>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="resources" class="section-shell resources-section">
+        <p class="eyebrow">RESOURCES</p>
+        <h2>Project materials.</h2>
+        <div class="resource-grid">
+          <a id="paper-card" class="resource-card resource-card-disabled" href="#" aria-disabled="true">
+            <span class="resource-icon">↙</span>
+            <h3>Paper</h3>
+            <p>Publication PDF will be linked here.</p>
+            <span class="resource-status">CONFIGURE LINK</span>
+          </a>
+          <a id="code-card" class="resource-card" href="https://github.com/scq-rl" target="_blank" rel="noreferrer">
+            <span class="resource-icon">⌘</span>
+            <h3>Code</h3>
+            <p>Source code, training configurations, and reproduction notes.</p>
+            <span class="resource-status">VIEW ORGANIZATION ↗</span>
+          </a>
+          <a id="appendix-card" class="resource-card resource-card-disabled" href="#" aria-disabled="true">
+            <span class="resource-icon">＋</span>
+            <h3>Appendix</h3>
+            <p>Additional technical detail and experimental protocol.</p>
+            <span class="resource-status">CONFIGURE LINK</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="citation" class="section-shell citation-section">
+        <div>
+          <p class="eyebrow">CITATION</p>
+          <h2>Reference SCQ.</h2>
+          <p class="citation-copy">The citation entry is intentionally a template until the author list and publication venue are finalized.</p>
+        </div>
+        <div class="citation-block">
+          <button id="copy-citation" class="copy-button" type="button">Copy BibTeX</button>
+          <pre id="citation-text">@article{scq,
+  title   = {SCQ: Stabilizing Conservative Q-Learning with Sigmoid-Bounded Entropy},
+  author  = {Author names to be confirmed},
+  year    = {2026}
+}</pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer section-shell">
+      <p>SCQ — Sigmoid-Bounded Conservative Q-Learning</p>
+      <p>© <span id="year"></span> SCQ Research</p>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>
