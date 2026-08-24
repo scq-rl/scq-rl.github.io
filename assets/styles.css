@@ -115,9 +115,6 @@ h3 { font-size: 1.15rem; letter-spacing: -0.03em; margin-bottom: 10px; }
 .clip-grid .video-shell { flex: 0 0 176px; }
 .clip-grid video { aspect-ratio: 4 / 3; background: var(--ink); display: block; height: 100%; object-fit: cover; width: 100%; }
 .video-shell { aspect-ratio: 4 / 3; position: relative; }
-.video-toggle { background: rgba(8, 34, 31, 0.84); border: 1px solid rgba(255, 255, 255, 0.65); color: white; cursor: pointer; font: 700 0.64rem var(--mono); left: 50%; letter-spacing: 0.04em; padding: 8px 11px; position: absolute; text-transform: uppercase; top: 50%; transform: translate(-50%, -50%); transition: opacity 160ms ease; z-index: 2; }
-.video-shell.is-playing .video-toggle { opacity: 0; pointer-events: none; }
-.video-shell.is-playing:hover .video-toggle { opacity: 1; pointer-events: auto; }
 .video-shell video { cursor: pointer; }
 .precision-details { border-left: 2px solid var(--teal); margin: 24px 0 0; padding-left: 18px; }
 .precision-metrics { display: grid; grid-template-columns: repeat(4, 1fr); }

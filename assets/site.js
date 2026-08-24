@@ -46,27 +46,6 @@ document.querySelector("#copy-citation").addEventListener("click", async (event)
 
 const interactiveVideos = document.querySelectorAll(".hero-clip video, .clip-grid video");
 
-function setVideoShellState(video, isPlaying) {
-  const shell = video.closest(".video-shell");
-  const button = shell.querySelector(".video-toggle");
-  shell.classList.toggle("is-playing", isPlaying);
-  button.textContent = isPlaying ? "Pause" : "Play";
-  button.setAttribute("aria-label", `${isPlaying ? "Pause" : "Play"} video`);
-}
-
-async function toggleVideo(video) {
-  if (video.paused) {
-    try {
-      await video.play();
-    } catch {
-      setVideoShellState(video, false);
-    }
-    return;
-  }
-
-  video.pause();
-}
-
 interactiveVideos.forEach((video) => {
   const sourcePath = video.querySelector("source").getAttribute("src");
   video.poster = sourcePath
@@ -77,19 +56,6 @@ interactiveVideos.forEach((video) => {
   shell.className = "video-shell";
   video.parentNode.insertBefore(shell, video);
   shell.append(video);
-
-  const button = document.createElement("button");
-  button.className = "video-toggle";
-  button.type = "button";
-  button.textContent = "Play";
-  button.setAttribute("aria-label", "Play video");
-  shell.append(button);
-
-  button.addEventListener("click", () => toggleVideo(video));
-  video.addEventListener("click", () => toggleVideo(video));
-  video.addEventListener("play", () => setVideoShellState(video, true));
-  video.addEventListener("pause", () => setVideoShellState(video, false));
-  setVideoShellState(video, false);
 });
 
 const videoObserver = new IntersectionObserver(
@@ -111,7 +77,7 @@ document.querySelectorAll(".clip-grid").forEach((clipGrid) => {
   let isDragging = false;
 
   clipGrid.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0) return;
+    if (event.button !== 0 || event.target !== clipGrid) return;
 
     startClientX = event.clientX;
     startScrollLeft = clipGrid.scrollLeft;
