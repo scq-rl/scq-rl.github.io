@@ -1,9 +1,27 @@
 const project = {
   authors: [
-    { name: "Author Name", affiliation: "Affiliation" },
-    { name: "Author Name", affiliation: "Affiliation" },
+    {
+      name: "Xiefeng Wu",
+      affiliation: "School of Computer Science, Wuhan University",
+      email: "wuxiefeng@whu.edu.cn",
+    },
+    {
+      name: "Shu Zhang",
+      affiliation: "School of Electronic Information, Wuhan University",
+      email: "00033521@whu.edu.cn",
+    },
+    {
+      name: "Zhaojie Chu",
+      affiliation: "School of Electronic and Information Engineering, South China University of Technology",
+      email: "zjchu_china@163.com",
+    },
+    {
+      name: "Mingyu Hu",
+      affiliation: "School of Electronic Information, Wuhan University",
+      email: "mingyuhu@whu.edu.cn",
+    },
   ],
-  publicationNote: "Author names, affiliations, and publication links will be finalized before public release.",
+  publicationNote: "Research project · 2026",
   paperUrl: "",
   appendixUrl: "",
   codeUrl: "https://github.com/scq-rl",
@@ -11,7 +29,10 @@ const project = {
 
 const authorsElement = document.querySelector("#authors");
 authorsElement.innerHTML = project.authors
-  .map(({ name, affiliation }) => `<span><strong>${name}</strong><small>${affiliation}</small></span>`)
+  .map(
+    ({ name, affiliation, email }) =>
+      `<span><strong>${name}</strong><small>${affiliation}</small><a href="mailto:${email}">${email}</a></span>`,
+  )
   .join("");
 
 document.querySelector("#publication-note").textContent = project.publicationNote;

@@ -48,6 +48,8 @@ h3 { font-size: 1.15rem; letter-spacing: -0.03em; margin-bottom: 10px; }
 .authors span { border-left: 2px solid var(--orange); display: grid; padding-left: 10px; }
 .authors strong { font-size: 0.9rem; }
 .authors small { color: var(--muted); font-size: 0.72rem; }
+.authors a { color: var(--teal-dark); font: 0.68rem var(--mono); margin-top: 3px; }
+.authors a:hover { text-decoration: underline; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .button { align-items: center; display: inline-flex; font-size: 0.9rem; font-weight: 800; gap: 22px; padding: 13px 17px; }
 .button span { font-size: 1.15rem; }
