@@ -11,6 +11,11 @@ const project = {
       email: "00033521@whu.edu.cn",
     },
     {
+      name: "Jinrong Yang",
+      affiliation: "Huazhong University of Science and Technology",
+      email: "yangjinrong@hust.edu.cn",
+    },
+    {
       name: "Zhaojie Chu",
       affiliation: "School of Electronic and Information Engineering, South China University of Technology",
       email: "zjchu_china@163.com",

@@ -15,6 +15,7 @@
       <a class="brand" href="#top" aria-label="SCQ home">SCQ<span>.</span></a>
       <nav aria-label="Primary navigation">
         <a href="#method">Method</a>
+        <a href="#advantage">Advantage</a>
         <a href="#research">Research</a>
         <a href="#resources">Resources</a>
         <a href="#citation">Citation</a>
@@ -126,6 +127,65 @@
         </figure>
       </section>
 
+      <section id="advantage" class="advantage-section">
+        <div class="section-shell">
+          <div class="advantage-intro">
+            <div>
+              <p class="eyebrow">PROTOCOL ADVANTAGE</p>
+              <h2>Real-world online learning without a human safety net.</h2>
+            </div>
+            <p>
+              SCQ is designed for a stricter deployment contract: start with one successful demonstration, learn online from robot interaction, and operate without corrective human intervention.
+            </p>
+          </div>
+          <div class="comparison-wrap" role="region" aria-label="Protocol comparison with RL-100 and HIL-SERL" tabindex="0">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th scope="col">Deployment requirement</th>
+                  <th scope="col" class="scq-column"><span>SCQ</span><small>this work</small></th>
+                  <th scope="col"><span>RL-100</span><small>real-world manipulation</small></th>
+                  <th scope="col"><span>HIL-SERL</span><small>human-in-the-loop RL</small></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><strong>One successful demonstration initializes learning</strong><span>Minimal offline data before deployment</span></th>
+                  <td class="scq-column"><b class="status-yes">Yes</b><small>one-shot protocol</small></td>
+                  <td><b class="status-neutral">Not the reported setting</b></td>
+                  <td><b class="status-neutral">Not the reported setting</b></td>
+                </tr>
+                <tr>
+                  <th scope="row"><strong>Human corrective intervention required online</strong><span>Operator action correction during training</span></th>
+                  <td class="scq-column"><b class="status-no">No</b><small>autonomous after initialization</small></td>
+                  <td><b class="status-no">No</b><small>iterative self-improvement</small></td>
+                  <td><b class="status-yes">Yes</b><small>human-in-the-loop</small></td>
+                </tr>
+                <tr>
+                  <th scope="row"><strong>End-to-end visual policy updated on the robot</strong><span>Online policy improvement from visual observations</span></th>
+                  <td class="scq-column"><b class="status-yes">Yes</b></td>
+                  <td><b class="status-yes">Yes</b></td>
+                  <td><b class="status-yes">Yes</b></td>
+                </tr>
+                <tr>
+                  <th scope="row"><strong>Cross-embodiment task coverage</strong><span>Manipulation, wheeled, quadruped, and humanoid systems</span></th>
+                  <td class="scq-column"><b class="status-yes">Yes</b><small>four embodiment families</small></td>
+                  <td><b class="status-neutral">Manipulation focus</b></td>
+                  <td><b class="status-neutral">Manipulation focus</b></td>
+                </tr>
+                <tr>
+                  <th scope="row"><strong>Fixed-anchor training with deployment generalization</strong><span>Changed target position and angle at evaluation</span></th>
+                  <td class="scq-column"><b class="status-yes">Yes</b><small>cross-position &amp; cross-angle</small></td>
+                  <td><b class="status-neutral">Not the reported setting</b></td>
+                  <td><b class="status-neutral">Not the reported setting</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="comparison-note">Protocol-level comparison based on the central settings reported for each method; it is not a matched performance ranking. RL-100 refers to <em>RL-100: Performant Robotic Manipulation with Real-World Reinforcement Learning</em>; HIL-SERL refers to <em>Precise and Dexterous Robotic Manipulation via Human-in-the-Loop Reinforcement Learning</em>.</p>
+        </div>
+      </section>
+
       <section id="research" class="research-section">
         <div class="section-shell">
           <p class="eyebrow">REAL-WORLD ROBOT LEARNING</p>
@@ -175,15 +235,25 @@
                 <video controls muted loop playsinline preload="none"><source src="assets/videos/manipulation/arm-align.mp4" type="video/mp4" /></video>
               </div>
               <div class="precision-details">
-                <div class="precision-metrics" aria-label="High-precision manipulation results">
-                  <article><strong>30 min</strong><span>online training time</span></article>
-                  <article><strong>8,000</strong><span>interaction steps to first 100% success</span></article>
-                  <article><strong>&lt;0.2 mm</strong><span>positioning precision</span></article>
-                  <article><strong>&lt;1°</strong><span>angular precision</span></article>
-                </div>
+                <p class="research-tag">HIGH-PRECISION ALIGNMENT · SUMMARY</p>
+                <table class="precision-table" aria-label="High-precision manipulation results">
+                  <thead>
+                    <tr><th scope="col">Metric</th><th scope="col">Result</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">Online training time</th><td>30 min</td></tr>
+                    <tr><th scope="row">First 100% success</th><td>8,000 interaction steps</td></tr>
+                    <tr><th scope="row">Positioning precision</th><td>&lt;0.2 mm</td></tr>
+                    <tr><th scope="row">Angular precision</th><td>&lt;1°</td></tr>
+                  </tbody>
+                </table>
                 <div class="precision-protocol">
-                  <p class="research-tag">FIXED-ANCHOR TRAINING · GENERALIZATION EVALUATION</p>
-                  <p>Training uses a fixed anchor configuration. Evaluation changes target position and target angle, testing cross-position and cross-angle generalization rather than memorization of the training pose.</p>
+                  <p class="research-tag">GENERALIZATION PROTOCOL</p>
+                  <dl>
+                    <div><dt>Training</dt><dd>Fixed anchor configuration</dd></div>
+                    <div><dt>Evaluation</dt><dd>Changed target position and target angle</dd></div>
+                  </dl>
+                  <p>Tests cross-position and cross-angle generalization rather than memorization of the training pose.</p>
                 </div>
               </div>
             </article>
