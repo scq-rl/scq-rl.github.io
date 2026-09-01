@@ -17,7 +17,7 @@ const project = {
     },
     {
       name: "Zhaojie Chu",
-      affiliation: "School of Electronic and Information Engineering, South China University of Technology",
+      affiliation: "School of Internet, Anhui University",
       email: "zjchu_china@163.com",
     },
     {
