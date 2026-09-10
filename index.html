@@ -114,14 +114,10 @@
             <p class="eyebrow">FIG. 01 · MECHANISM AND TRAINING DIAGNOSTIC</p>
             <h3>Why bounded entropy produces a clearer policy-improvement signal.</h3>
           </div>
-          <div class="evidence-grid">
+          <div class="evidence-grid evidence-grid-single">
             <article>
-              <img src="assets/figures/negative-entropy-mechanism.png" alt="Conceptual comparison of default entropy and sigmoid-bounded entropy in the soft Q landscape" />
-              <p><strong>(a) Negative-entropy mechanism.</strong> With a Gaussian policy of σπ = 0.1 and actions sampled within 1.5σπ of the mean, the default entropy term can lower Q̂ near the policy action and shift max-Q improvement toward OOD actions. SigEnt remains positive and bounded, producing a clearer high-Q region.</p>
-            </article>
-            <article>
-              <img src="assets/figures/door-human-q-gradient.png" alt="Door Human policy mean Q-gradient training diagnostic" />
-              <p><strong>(b) Door Human one-shot diagnostic.</strong> The curves show logged batch mean ‖∇μ(−Q)‖₂ over 1M online steps without pretraining. The standard-entropy run ends at its 975k crash point; SigEnt uses target standard deviations 0.08 and 0.20. Each curve is one run.</p>
+              <img src="assets/figures/door-human-entropy-mechanism-composite.png" alt="Three-panel composite: conceptual soft-Q landscape under default vs. sigmoid-bounded entropy, per-run Q-gradient stability curves, and post-100K summary bars, for Door Human one-shot training" />
+              <p><strong>(a) Conceptual soft-Q effect.</strong> With a Gaussian policy of σπ = 0.1 and actions sampled within 1.5σπ of the mean, the default entropy term can lower Q̂ near the policy action and shift max-Q improvement toward OOD actions; SigEnt stays positive and bounded, producing a clearer high-Q region. <strong>(b) Door Human one-shot diagnostic.</strong> Each curve is a five-seed mean of the signed, normalized second difference of the logged policy-mean Q-gradient over 1M online steps, across four old-entropy targets (−0.5, −1, −1.5, −2) and four SigEnt target standard deviations (0.03, 0.05, 0.08, 0.10). <strong>(c) Post-100K summary.</strong> Mean absolute normalized curvature after the initial transient, mean ± sample standard deviation across the same five seeds — SigEnt settles to a visibly calmer signal than every old-entropy target shown.</p>
             </article>
           </div>
         </figure>

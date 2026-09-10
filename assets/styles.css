@@ -89,6 +89,8 @@ h3 { font-size: 1.15rem; letter-spacing: -0.03em; margin-bottom: 10px; }
 .evidence-grid img { background: white; display: block; height: 300px; object-fit: contain; width: 100%; }
 .evidence-grid p { color: var(--muted); font-size: 0.78rem; line-height: 1.55; margin: 14px 3px 2px; }
 .evidence-grid strong { color: var(--ink); }
+.evidence-grid-single { grid-template-columns: 1fr; }
+.evidence-grid-single img { height: auto; max-height: 640px; }
 .advantage-section { background: var(--paper); color: var(--ink); padding: 118px 0; }
 .advantage-section .eyebrow { color: var(--teal); }
 .advantage-intro { align-items: end; display: grid; gap: 60px; grid-template-columns: 1.2fr 0.8fr; }
