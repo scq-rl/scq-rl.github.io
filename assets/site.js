@@ -22,7 +22,7 @@ const project = {
     },
   ],
   publicationNote: "Research project · 2026",
-  paperUrl: "",
+  paperUrl: "https://arxiv.org/abs/2609.12749",
   appendixUrl: "",
   codeUrl: "https://github.com/scq-rl",
 };
